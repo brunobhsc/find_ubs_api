@@ -10,13 +10,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180524161429) do
+ActiveRecord::Schema.define(version: 20180524164251) do
 
   create_table "entries", force: :cascade do |t|
     t.string "name"
     t.string "address"
     t.string "city"
     t.string "phone"
+    t.integer "score_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["score_id"], name: "index_entries_on_score_id"
+  end
+
+  create_table "geocodes", force: :cascade do |t|
+    t.decimal "lat"
+    t.decimal "long"
+    t.integer "entry_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["entry_id"], name: "index_geocodes_on_entry_id"
+  end
+
+  create_table "scores", force: :cascade do |t|
+    t.integer "size"
+    t.integer "adaptation_for_seniors"
+    t.integer "medical_equipment"
+    t.integer "medicine"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
