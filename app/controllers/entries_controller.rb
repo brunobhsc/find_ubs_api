@@ -5,22 +5,12 @@ class EntriesController < ApplicationController
   def index
     @entries = Entry.all
 
-    render json:  @entries,
-                  root: true,
-                  include: {
-                    geocode: {only: [:lat, :long]},
-                    score: {only: [:size, :adaptation_for_seniors, :medical_equipment, :medicine]}
-                  },
-                  methods: :entries_count
+    render json:  @entries
   end
 
   # GET /entries/1
   def show
-    render json:  @entry,
-                  include: {
-                    geocode: {only: [:lat, :long]},
-                    score: {only: [:size, :adaptation_for_seniors, :medical_equipment, :medicine]}
-                  }
+    render json:  @entry
   end
 
   # POST /entries

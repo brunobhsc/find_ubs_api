@@ -6,7 +6,7 @@ class EntrySerializer < ActiveModel::Serializer
   has_one :geocode
 
   # Link HATEOAS
-  link(:self) { entry_url(object.id) }
+  # link(:self) { entry_url(object.id) }
 
   def entries_count
     Entry.all.count
