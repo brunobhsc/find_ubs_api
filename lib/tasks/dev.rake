@@ -35,6 +35,9 @@ namespace :dev do
       entry = Entry.create!(
         name: data["nom_estab"],
         address: data["dsc_endereco"],
+        county: data["cod_munic"],
+        cnes: data["cod_cnes"],
+        district: data["dsc_bairro"],
         city: data["dsc_cidade"],
         phone: data["dsc_telefone"],
         score: score
