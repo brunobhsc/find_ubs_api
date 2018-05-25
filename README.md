@@ -5,20 +5,20 @@ application up and running.
 
 Things you may want to cover:
 
-* Ruby version
+* Ruby and Rails version
+  - Ruby 2.3.1
+  - Rails 5.1.6
 
 * System dependencies
-
-* Configuration
+  - Linux O.S.
+  - RVM 1.29.3
 
 * Database creation
-
 * Database initialization
+  - RUN rails dev:setup
 
 * How to run the test suite
+  - RUN rspec spec
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* Start Server
+  - RUN rails server
