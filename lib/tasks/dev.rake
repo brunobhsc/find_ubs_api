@@ -2,6 +2,18 @@ namespace :dev do
   desc "Configura o ambiente de Desenvolvimento"
   task setup: :environment do
 
+    def set_score(score_description)
+      score_description = score_description.downcase!
+      if score_description.include?("desempenho mediano")
+        score = 1
+      elsif score_description.include?("desempenho acima")
+        score = 2
+      elsif score_description.include?("desempenho muito acima")
+        score = 3
+      end
+      score
+    end
+
     puts "Instalando Dependências..."
     %x(bundle)
 
@@ -12,12 +24,12 @@ namespace :dev do
 
     CSV.foreach("#{Rails.root}/public/ubs.csv", {col_sep: ",", headers: true}) do |row|
       data = row.to_hash.stringify_keys
-      
+
       score = Score.create!(
-        size: data["dsc_estrut_fisic_ambiencia"],
-        adaptation_for_seniors: data["dsc_adap_defic_fisic_idosos"],
-        medical_equipment: data["dsc_equipamentos"],
-        medicine: data["dsc_medicamentos"],
+        size: set_score(data["dsc_estrut_fisic_ambiencia"]),
+        adaptation_for_seniors: set_score(data["dsc_adap_defic_fisic_idosos"]),
+        medical_equipment: set_score(data["dsc_equipamentos"]),
+        medicine: set_score(data["dsc_medicamentos"]),
       )
 
       entry = Entry.create!(
@@ -35,7 +47,7 @@ namespace :dev do
       )
 
       puts "UBS criado(s) #{contador}"
-      
+
       contador += 1
 
     end

@@ -14,7 +14,7 @@
 
 class Entry < ApplicationRecord
   #Score associations
-  belongs_to :score
+  belongs_to :score, optional: true
 
   #Geocode associations
   has_one :geocode
