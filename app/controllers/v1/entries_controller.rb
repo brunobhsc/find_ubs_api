@@ -6,7 +6,7 @@ module V1
     def index
       @entries = Entry.all
 
-      render json:  @entries
+      render json:  @entries.page(params[:page].try(:[], :number)).per(10)
     end
 
     # GET /entries/1
