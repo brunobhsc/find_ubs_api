@@ -2,34 +2,45 @@ namespace :dev do
   desc "Configura o ambiente de Desenvolvimento"
   task setup: :environment do
 
-  	puts "Instalando Dependências..."
-  	%x(bundle)
+    puts "Instalando Dependências..."
+    %x(bundle)
 
-  	puts "Criando a base de Dados"
-  	%x(rails db:drop db:create db:migrate)
+    puts "Criando a base de Dados (Isso pode demorar um pouco...)"
+    %x(rails db:drop db:create db:migrate)
 
-  	score = Score.create!(
-      size: 1,
-      adaptation_for_seniors: 2,
-      medical_equipment: 3,
-      medicine: 1
-    )
+    contador = 1
 
-    entry = Entry.create!(
-  			name: "Primeiro UBS",
-        address: "Endereço do primeiro UBS, 100",
-        city: "São Paulo",
-        phone: "12345-6789",
+    CSV.foreach("#{Rails.root}/public/ubs.csv", {col_sep: ",", headers: true}) do |row|
+      data = row.to_hash.stringify_keys
+      
+      score = Score.create!(
+        size: data["dsc_estrut_fisic_ambiencia"],
+        adaptation_for_seniors: data["dsc_adap_defic_fisic_idosos"],
+        medical_equipment: data["dsc_equipamentos"],
+        medicine: data["dsc_medicamentos"],
+      )
+
+      entry = Entry.create!(
+        name: data["nom_estab"],
+        address: data["dsc_endereco"],
+        city: data["dsc_cidade"],
+        phone: data["dsc_telefone"],
         score: score
-  	)
+      )
 
-    geocode = Geocode.create!(
-      lat: -23.50573,
-      long: -46.8696606,
-      entry:  entry
-    )
+      geocode = Geocode.create!(
+        lat: data["vlr_latitude"],
+        long: data["vlr_longitude"],
+        entry:  entry
+      )
 
-  	puts "Concluído!"
+      puts "UBS criado(s) #{contador}"
+      
+      contador += 1
+
+    end
+
+    puts "Concluído!"
   end
 
 end
